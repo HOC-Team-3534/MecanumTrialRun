@@ -41,12 +41,12 @@ public class RobotMap {
 	public static final double maxAngularVelocity = Math.PI * 6; //radians per second
 
 	// Wheel Encoder Calculations
-	public static final double typicalAcceleration = 1.0; //meters per second per second
-	public static final double robotMass = 50; //kg
+	//public static final double typicalAcceleration = 1.0; //meters per second per second
+	//public static final double robotMass = 50; //kg
 	public static final double wheelDiameter = .1524; // measured in meters
 	public static final double gearRatio = 1/7.71;
 	public static final int ticksPerMotorRotation = 2048; // 2048 for Falcon500 (old ecnoders 1440 if in talon, 360 if into roboRIO)
-	public static final double driveWheelTorque = (wheelDiameter / 2) * (robotMass / 4 * typicalAcceleration) * Math.sin(90);
+	//public static final double driveWheelTorque = (wheelDiameter / 2) * (robotMass / 4 * typicalAcceleration) * Math.sin(90);
 	public static final double falconMaxRPM = 6380; //- 1 / 0.0007351097 * driveWheelTorque;
 	public static final double maxTicksPer100ms = falconMaxRPM * ticksPerMotorRotation / 60 / 10;
 	public static final double distancePerMotorRotation = gearRatio * wheelDiameter * Math.PI;
@@ -57,14 +57,6 @@ public class RobotMap {
 	public static void init() {
 
 		frontLeftMotor = new WPI_TalonFX(1);
-		// frontLeftMotor.configFactoryDefault(0);
-		// frontLeftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-		// frontLeftMotor.setSensorPhase(true);
-		// frontLeftMotor.setInverted(false);
-		// frontLeftMotor.configNominalOutputForward(0, 0);
-		// frontLeftMotor.configNominalOutputReverse(0, 0);
-		// frontLeftMotor.configPeakOutputForward(1, 0);
-		// frontLeftMotor.configPeakOutputReverse(-1, 0);
 		frontLeftMotor.config_kF(0, 0.05, 0);
 		frontLeftMotor.config_kP(0, 3, 0);
 		frontLeftMotor.config_kI(0, 0, 0);
@@ -72,14 +64,6 @@ public class RobotMap {
 		frontLeftMotor.setNeutralMode(NeutralMode.Brake);
 
 		backLeftMotor = new WPI_TalonFX(3);
-		//backLeftMotor.configFactoryDefault(0);
-		//backLeftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-		//backLeftMotor.setSensorPhase(true);
-		//backLeftMotor.setInverted(false);
-		//backLeftMotor.configNominalOutputForward(0, 0);
-		//backLeftMotor.configNominalOutputReverse(0, 0);
-		//backLeftMotor.configPeakOutputForward(1, 0);
-		//backLeftMotor.configPeakOutputReverse(-1, 0);
 		backLeftMotor.config_kF(0, 0.05, 0);
 		backLeftMotor.config_kP(0, 3, 0);
 		backLeftMotor.config_kI(0, 0, 0);
@@ -89,14 +73,7 @@ public class RobotMap {
 		//shooter = new WPI_TalonFX(6);
 
 		backRightMotor = new WPI_TalonFX(8);
-		//backRightMotor.configFactoryDefault(0);
-		//backRightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-		//backRightMotor.setSensorPhase(true);
 		backRightMotor.setInverted(true);
-		//backRightMotor.configNominalOutputForward(0, 0);
-		//backRightMotor.configNominalOutputReverse(0, 0);
-		//backRightMotor.configPeakOutputForward(1, 0);
-		//backRightMotor.configPeakOutputReverse(-1, 0);
 		backRightMotor.config_kF(0, 0.05, 0);
 		backRightMotor.config_kP(0, 3, 0);
 		backRightMotor.config_kI(0, 0, 0);
@@ -104,14 +81,7 @@ public class RobotMap {
 		backRightMotor.setNeutralMode(NeutralMode.Brake);
 
 		frontRightMotor = new WPI_TalonFX(10);
-		//frontRightMotor.configFactoryDefault(0);
-		//frontRightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-		//frontRightMotor.setSensorPhase(true);
 		frontRightMotor.setInverted(true);
-		//frontRightMotor.configNominalOutputForward(0, 0);
-		//frontRightMotor.configNominalOutputReverse(0, 0);
-		//frontRightMotor.configPeakOutputForward(1, 0);
-		//frontRightMotor.configPeakOutputReverse(-1, 0);
 		frontRightMotor.config_kF(0, 0.05, 0);
 		frontRightMotor.config_kP(0, 3, 0);
 		frontRightMotor.config_kI(0, 0, 0);

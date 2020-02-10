@@ -150,9 +150,9 @@ public class Robot extends TimedRobot {
 				loopCnt++;
 
 				// run processes
-				//shooter.process();
 				autonStateMachine.process();
 				drive.process();
+				//shooter.process();
 
 			}
 

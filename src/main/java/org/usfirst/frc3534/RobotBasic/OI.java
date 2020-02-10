@@ -136,6 +136,16 @@ public class OI {
 
             }
 
+		}),
+		Drive_DriverTargetMode(new Callable<Double>(){
+
+            @Override
+            public Double call() throws Exception{
+
+                return Robot.oi.getController1().getTriggerAxis(Hand.kRight);
+
+			}
+			
 		});
 		
 		/** Add in Function Axes here */
