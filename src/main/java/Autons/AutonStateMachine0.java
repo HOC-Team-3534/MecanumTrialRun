@@ -43,7 +43,7 @@ public class AutonStateMachine0 extends AutonStateMachineBase implements AutonSt
 
 			//calculate ramping and what not
 
-			part1 = new AutonCalculations(3.0 * 1.537, RobotMap.maxVelocity, RobotMap.typicalAcceleration, 0.020);
+			part1 = new AutonCalculations(3.0 * 1.537, RobotMap.maxVelocity, 0.75, 0.020);
 			part1.calculate();
 
 			nextState = 20;

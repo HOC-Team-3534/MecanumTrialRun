@@ -1,5 +1,7 @@
 package Autons;
 
+import org.usfirst.frc3534.RobotBasic.Robot;
+
 public class AutonCalculations{
 
     public double total_distance = 0, total_time = 0, total_cycles = 0;
@@ -87,6 +89,32 @@ public class AutonCalculations{
         }
 
         return current_velocity;
+
+    }
+
+    public double getMovementAngle(double finalX, double finalY){
+
+        double movementAngle = Math.atan((finalY - Robot.drive.getCurrentY()) / (finalX - Robot.drive.getCurrentX()));
+        double finalMovementAngle = movementAngle;
+        if(finalX < Robot.drive.getCurrentX() && finalY > Robot.drive.getCurrentY()) {
+
+
+
+        } else if(finalX < Robot.drive.getCurrentX() && finalY < Robot.drive.getCurrentY()) {
+
+            finalMovementAngle += Math.PI/2;
+
+        } else if(finalX > Robot.drive.getCurrentX() && finalY < Robot.drive.getCurrentY()) {
+
+            finalMovementAngle += Math.PI;
+
+        } else if(finalX > Robot.drive.getCurrentX() && finalY > Robot.drive.getCurrentY()) {
+
+            finalMovementAngle += (3 * Math.PI)/2;
+
+        }
+
+        return finalMovementAngle;
 
     }
 
