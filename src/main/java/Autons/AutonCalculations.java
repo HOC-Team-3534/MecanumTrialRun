@@ -118,6 +118,32 @@ public class AutonCalculations{
 
     }
 
+    public double getXVelocity(double finalX, double finalY, double generalV){
+
+        double mAngle = this.getMovementAngle(finalX, finalY);
+        return generalV * Math.cos(mAngle);
+
+    }
+
+    public double getYVelocity(double finalX, double finalY, double generalV){
+
+        double mAngle = this.getMovementAngle(finalX, finalY);
+        return generalV * Math.sin(mAngle);
+
+    }
+
+    public double getXDisplacement(double finalX, double finalY, double generalV){
+
+        return getXVelocity(finalX, finalY, generalV) * .02;
+
+    }
+
+    public double getYDisplacement(double finalX, double finalY, double generalV){
+
+        return getYVelocity(finalX, finalY, generalV) * .02;
+
+    }
+
     public boolean isFinished(){
 
         return current_velocity == 0 && current_cycle > total_cycles;
