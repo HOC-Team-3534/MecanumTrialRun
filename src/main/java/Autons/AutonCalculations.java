@@ -12,13 +12,31 @@ public class AutonCalculations{
 
     private int current_cycle = 0;
     private double current_velocity = 0;
+    public double currentXVelocity = 0.0;
+    public double currentXYelocity = 0.0;
+    public double finalMovementAngle = 0.0;
+    public double finalX = 0.0;
+    public double finalY = 0.0;
+    public double currX = 0.0;
+    public double currY = 0.0;
+    public double nextX;
+    public double nextY;
 
-    public AutonCalculations(double distance, double velocity, double accel, double cycle){
+    public double sumErrorX, lastErrorX, sumErrorY, lastErrorY;
+    public double kP, kI, kD;
 
-        this.total_distance = distance;
+    public AutonCalculations(double finalX, double finalY, double velocity, double accel, double cycle){
+
+        this.finalX = finalX;
+        this.finalY = finalY;
+        getCurrentPostion();
+        this.total_distance = getTotalDistance();
         this.max_cruise_velocity = velocity;
         this.acceleration = accel;
         this.cycle_time = cycle;
+        this.finalMovementAngle = getMovementAngle(finalX, finalY);
+        this.nextX = currX;
+        this.nextY = currY;
 
         reset();
 
@@ -62,9 +80,11 @@ public class AutonCalculations{
 
     }
 
-    public double getVelocity(){
+    public void calcGeneralVelocity(){
 
         current_cycle++;
+
+        getCurrentPostion();
 
         System.out.print(current_cycle);
 
@@ -88,59 +108,62 @@ public class AutonCalculations{
 
         }
 
-        return current_velocity;
+    }
 
+    public double getTotalDistance(){
+
+        return Math.sqrt(Math.pow(currY - finalY, 2) + Math.pow(currX - finalX, 2));
+
+    }
+
+    public void getCurrentPostion(){
+        currX = Robot.drive.getCurrentX();
+        currY = Robot.drive.getCurrentY();
     }
 
     public double getMovementAngle(double finalX, double finalY){
 
-        double movementAngle = Math.atan((finalY - Robot.drive.getCurrentY()) / (finalX - Robot.drive.getCurrentX()));
-        double finalMovementAngle = movementAngle;
+        double angle = Math.atan((finalY - currY) / (finalX - currX));
+        double movementAngle = angle;
         if(finalX < Robot.drive.getCurrentX() && finalY > Robot.drive.getCurrentY()) {
 
 
 
-        } else if(finalX < Robot.drive.getCurrentX() && finalY < Robot.drive.getCurrentY()) {
+        } else if(finalX < currX && finalY < currY) {
 
-            finalMovementAngle += Math.PI/2;
+            movementAngle += Math.PI/2;
 
-        } else if(finalX > Robot.drive.getCurrentX() && finalY < Robot.drive.getCurrentY()) {
+        } else if(finalX > currX && finalY < currY) {
 
-            finalMovementAngle += Math.PI;
+            movementAngle += Math.PI;
 
-        } else if(finalX > Robot.drive.getCurrentX() && finalY > Robot.drive.getCurrentY()) {
+        } else if(finalX > currX && finalY > currY) {
 
-            finalMovementAngle += (3 * Math.PI)/2;
+            movementAngle += (3 * Math.PI)/2;
 
         }
 
-        return finalMovementAngle;
+        return movementAngle;
 
     }
 
-    public double getXVelocity(double finalX, double finalY, double generalV){
+    public double getXVelocity(){
 
-        double mAngle = this.getMovementAngle(finalX, finalY);
-        return generalV * Math.cos(mAngle);
-
-    }
-
-    public double getYVelocity(double finalX, double finalY, double generalV){
-
-        double mAngle = this.getMovementAngle(finalX, finalY);
-        return generalV * Math.sin(mAngle);
+        double velocity = current_velocity * Math.cos(finalMovementAngle);
+        double error = currX - nextX;
+        nextX += velocity * cycle_time;
+        velocity += error * kP + sumErrorX * kI + (error - lastErrorX) * kD;
+        return velocity;
 
     }
 
-    public double getXDisplacement(double finalX, double finalY, double generalV){
+    public double getYVelocity(){
 
-        return getXVelocity(finalX, finalY, generalV) * .02;
-
-    }
-
-    public double getYDisplacement(double finalX, double finalY, double generalV){
-
-        return getYVelocity(finalX, finalY, generalV) * .02;
+        double velocity = current_velocity * Math.sin(finalMovementAngle);
+        double error = currY - nextY;
+        nextY += velocity * cycle_time;
+        velocity += error * kP + sumErrorY * kI + (error - lastErrorY) * kD;
+        return velocity;
 
     }
 

@@ -3,6 +3,8 @@ package Autons;
 import org.usfirst.frc3534.RobotBasic.Robot;
 import org.usfirst.frc3534.RobotBasic.RobotMap;
 import Autons.AutonCalculations;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -43,7 +45,9 @@ public class AutonStateMachine0 extends AutonStateMachineBase implements AutonSt
 
 			//calculate ramping and what not
 
-			part1 = new AutonCalculations(3.0 * 1.537, RobotMap.maxVelocity, 0.75, 0.020);
+			//magic number = 1.537
+
+			part1 = new AutonCalculations(0, 200 , RobotMap.maxVelocity, 0.75, 0.020);
 			part1.calculate();
 
 			nextState = 20;
@@ -52,12 +56,27 @@ public class AutonStateMachine0 extends AutonStateMachineBase implements AutonSt
 		case 20:
 			
 			//drive
-			double generalVelocity = part1.getVelocity();
+			part1.calcGeneralVelocity();
+			NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+			double tx = table.getEntry("tx").getDouble(0.0) / 180 * Math.PI;
+
+			double rotationalVelocity = 0.0;
+
+			if(tx < -10.0){
+
+				rotationalVelocity = 0.2;
+
+			}else if(tx > 10.0){
+
+				rotationalVelocity = -0.2;
+
+			}
+
 			//this is where we want to change set angle if we want to rotate while driving
-			double angle_error = set_angle - Robot.drive.getAngle().getRadians();
-			double correctional_velocity = angle_error * 0.30 + (angle_error - last_angle_error) * 0;
-			last_angle_error = angle_error;
-			Robot.drive.drive(generalVelocity * Math.cos(part1Heading), generalVelocity * Math.sin(part1Heading), correctional_velocity, true);
+			// double angle_error = set_angle - Robot.drive.getAngle().getRadians();
+			// double correctional_velocity = angle_error * 0.30 + (angle_error - last_angle_error) * 0;
+			// last_angle_error = angle_error;
+			Robot.drive.drive(part1.getXVelocity(), part1.getYVelocity(), rotationalVelocity, true);
 
 			if(part1.isFinished()){
 				nextState = 100;
