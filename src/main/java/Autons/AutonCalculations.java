@@ -125,22 +125,46 @@ public class AutonCalculations{
 
         double angle = Math.atan((finalY - currY) / (finalX - currX));
         double movementAngle = angle;
-        if(finalX < Robot.drive.getCurrentX() && finalY > Robot.drive.getCurrentY()) {
+        if(finalX < currX && finalY > currY) { //quadrant 3
 
+            movementAngle = Math.PI + movementAngle;
 
+        } else if(finalX < currX && finalY < currY) { //quadrant 2
 
-        } else if(finalX < currX && finalY < currY) {
+            movementAngle = Math.PI - movementAngle;
 
-            movementAngle += Math.PI/2;
-
-        } else if(finalX > currX && finalY < currY) {
-
-            movementAngle += Math.PI;
+        } else if(finalX > currX && finalY < currY) { //quadrant 1
+            
+            
 
         } else if(finalX > currX && finalY > currY) {
 
-            movementAngle += (3 * Math.PI)/2;
+            movementAngle = Math.PI * 2 - movementAngle;
 
+        } else if(finalX == currX){
+            
+           if(finalY > currY){
+               
+               movementAngle = Math.PI * 3 / 2;
+               
+           }else{
+               
+               movementAngle = Math.PI / 2;
+               
+           }
+            
+        }else if(finalY == currY){
+            
+            if(finalX > currX){
+               
+               movementAngle = 0;
+               
+           }else{
+               
+               movementAngle = Math.PI;
+               
+           }
+            
         }
 
         return movementAngle;
