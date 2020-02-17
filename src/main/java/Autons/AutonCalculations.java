@@ -23,7 +23,7 @@ public class AutonCalculations{
     public double nextY;
 
     public double sumErrorX, lastErrorX, sumErrorY, lastErrorY;
-    public double kP, kI, kD;
+    public double kP = 0.25, kI = 0.0, kD = 2.5;
 
     public AutonCalculations(double finalX, double finalY, double velocity, double accel, double cycle){
 
@@ -171,21 +171,23 @@ public class AutonCalculations{
 
     }
 
-    public double getXVelocity(){
+    public double getXVelocity(boolean negated){
 
         double velocity = current_velocity * Math.cos(finalMovementAngle);
         double error = currX - nextX;
-        nextX += velocity * cycle_time;
+        int multipler = (negated) ? -1:1;
+        nextX += multiplier * velocity * cycle_time;
         velocity += error * kP + sumErrorX * kI + (error - lastErrorX) * kD;
         return velocity;
 
     }
 
-    public double getYVelocity(){
+    public double getYVelocity(boolean negated){
 
         double velocity = current_velocity * Math.sin(finalMovementAngle);
         double error = currY - nextY;
-        nextY += velocity * cycle_time;
+        int multipler = (negated) ? -1:1;
+        nextY += multiplier * velocity * cycle_time;
         velocity += error * kP + sumErrorY * kI + (error - lastErrorY) * kD;
         return velocity;
 
