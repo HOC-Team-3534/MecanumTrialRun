@@ -175,7 +175,7 @@ public class AutonCalculations{
 
         double velocity = current_velocity * Math.cos(finalMovementAngle);
         double error = currX - nextX;
-        int multipler = (negated) ? -1:1;
+        int multiplier = (negated) ? -1:1;
         nextX += multiplier * velocity * cycle_time;
         velocity += error * kP + sumErrorX * kI + (error - lastErrorX) * kD;
         return velocity;
@@ -186,7 +186,7 @@ public class AutonCalculations{
 
         double velocity = current_velocity * Math.sin(finalMovementAngle);
         double error = currY - nextY;
-        int multipler = (negated) ? -1:1;
+        int multiplier = (negated) ? -1:1;
         nextY += multiplier * velocity * cycle_time;
         velocity += error * kP + sumErrorY * kI + (error - lastErrorY) * kD;
         return velocity;

@@ -76,7 +76,7 @@ public class AutonStateMachine0 extends AutonStateMachineBase implements AutonSt
 			// double angle_error = set_angle - Robot.drive.getAngle().getRadians();
 			// double correctional_velocity = angle_error * 0.30 + (angle_error - last_angle_error) * 0;
 			// last_angle_error = angle_error;
-			Robot.drive.drive(part1.getXVelocity(), part1.getYVelocity(), rotationalVelocity, true);
+			Robot.drive.drive(part1.getXVelocity(false), part1.getYVelocity(true), rotationalVelocity, true);
 
 			if(part1.isFinished()){
 				nextState = 100;
