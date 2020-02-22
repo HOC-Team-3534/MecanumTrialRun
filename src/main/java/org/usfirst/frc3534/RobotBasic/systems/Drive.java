@@ -104,7 +104,7 @@ public class Drive extends SystemBase implements SystemInterface {
 			double totalAngle = navxAngle + tx;
 			SmartDashboard.putNumber("TotalAngle", totalAngle);
 			limelightX = distance * Math.sin(totalAngle);
-			limelightX = ((getRawAngle() > Math.PI && skew > -45) || (getRawAngle() <= Math.PI && skew <= -45)) ? -limelightX:limelightX;
+			limelightX = (posDirection == Direction.left) ? -limelightX: limelightX;
 			limelightY = distance * Math.cos(totalAngle);
 
 			double limelightToCenter;
